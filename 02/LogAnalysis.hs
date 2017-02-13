@@ -50,3 +50,4 @@ whatWentWrong (x : xs) = case x of
   (LogMessage (Error s) _ m) -> if s >= 50 then (m : whatWentWrong xs) else whatWentWrong xs 
   _                          -> whatWentWrong xs
     
+-- testWhatWentWrong parse whatWentWrong "error.log"
