@@ -27,7 +27,6 @@ fun2' = sum
 data Tree a = Leaf | Node Integer (Tree a) a (Tree a) deriving (Show, Eq)
 
 foldTree :: [a] -> Tree a
-foldTree [] = Leaf
 foldTree xs = foldr add Leaf xs
  
 add :: a -> Tree a -> Tree a
@@ -43,4 +42,9 @@ add x (Node h left@(Node hl _ _ _) v right@(Node hr _ _ _))
         right' = (add x right)
         (Node h' _ _ _ ) = right'
             
-      
+-- e3
+xor :: [Bool] -> Bool
+xor xs = foldr addBool False xs
+
+addBool :: Bool -> Bool -> Bool
+addBool acc  b  = if b then not (acc && b) else acc 
