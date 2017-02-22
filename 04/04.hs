@@ -28,23 +28,28 @@ data Tree a = Leaf | Node Integer (Tree a) a (Tree a) deriving (Show, Eq)
 
 foldTree :: [a] -> Tree a
 foldTree xs = foldr add Leaf xs
- 
-add :: a -> Tree a -> Tree a
-add x Leaf                  = Node 0 Leaf x Leaf
-add x (Node 0 Leaf v Leaf)  = Node 1 (add x Leaf) v Leaf
-add x (Node _ Leaf v right) = Node 1 (add x Leaf) v right
-add x (Node _ left v Leaf)  = Node 1 left v (add x Leaf)
-add x (Node h left@(Node hl _ _ _) v right@(Node hr _ _ _))
-  | hl < hr   = Node h (add x left) v right
-  | hl > hr   = Node h left v (add x right)
-  | otherwise = Node (h' + 1) left v right'
-      where
-        right' = (add x right)
-        (Node h' _ _ _ ) = right'
+  where 
+    add :: a -> Tree a -> Tree a
+    add x Leaf                  = Node 0 Leaf x Leaf
+    add x (Node 0 Leaf v Leaf)  = Node 1 (add x Leaf) v Leaf
+    add x (Node _ Leaf v right) = Node 1 (add x Leaf) v right
+    add x (Node _ left v Leaf)  = Node 1 left v (add x Leaf)
+    add x (Node h left@(Node hl _ _ _) v right@(Node hr _ _ _))
+      | hl < hr   = Node h (add x left) v right
+      | hl > hr   = Node h left v (add x right)
+      | otherwise = Node (h' + 1) left v right'
+      where right' = (add x right)
+            (Node h' _ _ _ ) = right'
             
 -- e3
 xor :: [Bool] -> Bool
 xor xs = foldr addBool False xs
+  where addBool :: Bool -> Bool -> Bool
+        addBool acc  b  = if b then not (acc && b) else acc 
 
-addBool :: Bool -> Bool -> Bool
-addBool acc  b  = if b then not (acc && b) else acc 
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr step []
+  where step x acc = (f x) : acc
+
+          
+
